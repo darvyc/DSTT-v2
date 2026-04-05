@@ -1,0 +1,6 @@
+torch>=2.0.0
+numpy>=1.24.0
+tqdm>=4.66.0
+
+# Optional: GPT-2 BPE tokenizer (not needed for character-level training)
+# tiktoken>=0.5.0

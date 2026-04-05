@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "dstt-transformer"
+version = "3.0.0"
+description = "DSTT-T: Dynamic Semi-Trained Topology — Transformer. A hybrid transformer with combinatorial partitioning, dual-flow attention, and evolutionary meta-optimisation."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
+dependencies = [
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+train = [
+    "datasets>=2.14.0",
+    "tokenizers>=0.15.0",
+    "wandb>=0.16.0",
+    "tqdm>=4.66.0",
+    "pyyaml>=6.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
