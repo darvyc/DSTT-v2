@@ -462,18 +462,6 @@ pytest tests/ -v
 
 ---
 
-## Benchmarks
-
-Results on standard benchmarks (Base configuration, ~125M params):
-
-| Metric | DSTT-T | Vanilla Transformer | Switch Transformer |
-|--------|--------|--------------------|--------------------|
-| **Perplexity** (WikiText-103) ↓ | **18.2** | 21.4 | 19.8 |
-| **Coherence** ↑ | **0.912** | 0.847 | 0.863 |
-| **Throughput** (tok/s) | 2,840 | 3,200 | 2,950 |
-
----
-
 ## Citation
 
 ```bibtex
