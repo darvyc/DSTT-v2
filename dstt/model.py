@@ -1,7 +1,7 @@
 """
-DSTT Model: DSTTv2 and DSTTBlock.
+DSTT-T Model: DSTTv2 and DSTTBlock.
 
-The full DSTTransformer architecture. Each DSTTBlock composes:
+The full DSTT-Transformer architecture. Each DSTTBlock composes:
 1. LayerNorm → LTM (Ramsey-partitioned dual-flow attention)
 2. Wittgenstein Gate on attention output
 3. Residual connection
@@ -27,7 +27,7 @@ from dstt.utils import RMSNorm, count_parameters, format_params
 
 
 class DSTTBlock(nn.Module):
-    """A single DSTT DSTT-v2 block.
+    """A single DSTT-T DSTT-v2 block.
 
     Computation flow::
 
@@ -113,7 +113,7 @@ class DSTTBlock(nn.Module):
 
 
 class DSTTv2(nn.Module):
-    """Complete DSTT model.
+    """Complete DSTT-T model.
 
     Architecture::
 
@@ -256,4 +256,4 @@ class DSTTv2(nn.Module):
 
 
 # Backward-compatible alias
-DSTTv2 = DSTTv2
+DSTTTransformer = DSTTv2

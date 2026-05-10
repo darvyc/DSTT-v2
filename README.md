@@ -16,7 +16,6 @@
 ## What is DSTT?
 
 DSTT is a **lightweight sequence model architecture** that replaces or augments every core transformer subsystem with a mechanism from the Dynamic Semi-Trained Topology (DSTT) framework — and trains exactly like GPT-2/3 using **next-token prediction**.
-
 The model is a causal language model. You feed it tokens, it predicts the next token. The training objective, optimiser, LR schedule, and generation loop are identical to GPT. What's different is what happens *inside* each DSTT-v2 block.
 
 ### The 6 Innovations Inside Each Block
