@@ -1,7 +1,7 @@
 <p align="center">
-  <h1 align="center">DSTT-T: Dynamic Semi-Trained Topology — Transformer</h1>
+  <h1 align="center">DSTT-v2: Dynamic Semi-Trained Topology v2</h1>
   <p align="center">
-    <em>A hybrid transformer trained like a GPT — combinatorial partitioning, dual-flow attention, and evolutionary meta-optimisation fused into every layer.</em>
+    <em>A lightweight sequence model trained like a GPT — combinatorial partitioning, dual-flow attention, and evolutionary meta-optimisation fused into every layer.</em>
   </p>
   <p align="center">
     <img src="https://img.shields.io/badge/python-3.9%2B-blue" alt="Python">
@@ -15,16 +15,16 @@
 
 ## What is DSTT-T?
 
-DSTT-T is a **hybrid transformer architecture** that replaces or augments every core transformer subsystem with a mechanism from the Dynamic Semi-Trained Topology (DSTT) framework — and trains exactly like GPT-2/3 using **next-token prediction**.
+DSTT-T is a **lightweight sequence model architecture** that replaces or augments every core transformer subsystem with a mechanism from the Dynamic Semi-Trained Topology (DSTT) framework — and trains exactly like GPT-2/3 using **next-token prediction**.
 
-The model is a causal language model. You feed it tokens, it predicts the next token. The training objective, optimiser, LR schedule, and generation loop are identical to GPT. What's different is what happens *inside* each transformer block.
+The model is a causal language model. You feed it tokens, it predicts the next token. The training objective, optimiser, LR schedule, and generation loop are identical to GPT. What's different is what happens *inside* each DSTT-v2 block.
 
 ### The 6 Innovations Inside Each Block
 
 | Component | Replaces | What it does |
 |-----------|----------|--------------|
 | **FDMP-E** | Embedding layer | Modality-structured embeddings with partition-aware positional encoding |
-| **RP-MHA** | Multi-head attention | Ramsey-coherence determines head count and variable-width scope |
+| **LTM** | Multi-head attention | Ramsey-coherence determines head count and variable-width scope |
 | **Dual-Flow Attention** | QKᵀ scoring | `score = QKᵀ/√d + α·CFM − β·AFM` — boosts relevant keys, suppresses incoherent ones |
 | **ARM-FFN** | Feed-forward network | Partition-gated mixture-of-experts with CFM-AFM routing |
 | **WCG** | Residual connection | Wittgenstein contextual gate — only lets useful signals through |
@@ -35,7 +35,7 @@ The model is a causal language model. You feed it tokens, it predicts the next t
 ```
 Input x
   │
-  ├─→ LayerNorm → RP-MHA (Ramsey-partitioned dual-flow attention)
+  ├─→ LayerNorm → LTM (Ramsey-partitioned dual-flow attention)
   │                  │
   │   Wittgenstein Gate (w₁)
   │   ▼
@@ -205,7 +205,7 @@ DSTT-T generates text exactly like GPT: autoregressive sampling one token at a t
 ### Sampling Methods
 
 ```python
-from dstt import DSTTTransformer, DSTTConfig
+from dstt import DSTTv2, DSTTConfig
 from dstt.generate import generate_text
 from dstt.tokenizer import CharTokenizer
 
@@ -341,8 +341,8 @@ dstt-transformer/
 │   ├── __init__.py              ← Public API
 │   ├── config.py                ← DSTTConfig (model architecture)
 │   ├── train_config.py          ← TrainConfig (training hyperparameters)
-│   ├── model.py                 ← DSTTTransformer, DSTTBlock
-│   ├── attention.py             ← RP-MHA (Ramsey-partitioned dual-flow attention)
+│   ├── model.py                 ← DSTTv2, DSTTBlock
+│   ├── attention.py             ← LTM (Ramsey-partitioned dual-flow attention)
 │   ├── embedding.py             ← FDMP-E (hybrid embedding layer)
 │   ├── routing.py               ← ARM-FFN (partition-gated MoE)
 │   ├── gating.py                ← WCG (Wittgenstein contextual gate)
@@ -437,10 +437,10 @@ checkpoint = {
 
 ```python
 import torch
-from dstt import DSTTTransformer
+from dstt import DSTTv2
 
 ckpt = torch.load("checkpoints/best.pt", weights_only=False)
-model = DSTTTransformer(ckpt["config"])
+model = DSTTv2(ckpt["config"])
 model.load_state_dict(ckpt["model_state_dict"])
 model.eval()
 ```

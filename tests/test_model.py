@@ -1,8 +1,8 @@
-"""Tests for DSTTTransformer and DSTTBlock."""
+"""Tests for DSTTv2 and DSTTBlock."""
 
 import torch
 import pytest
-from dstt import DSTTConfig, DSTTTransformer, DSTTBlock
+from dstt import DSTTConfig, DSTTv2, DSTTBlock
 from dstt.losses import DSTTLoss
 from dstt.utils import count_parameters
 
@@ -39,22 +39,22 @@ class TestDSTTBlock:
         assert out.shape == (2, 32, cfg.d_model)
 
 
-class TestDSTTTransformer:
+class TestDSTTv2:
 
     def test_output_shape(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         x = torch.randint(0, config.vocab_size, (2, 64))
         logits = model(x)
         assert logits.shape == (2, 64, config.vocab_size)
 
     def test_single_token(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         x = torch.randint(0, config.vocab_size, (1, 1))
         logits = model(x)
         assert logits.shape == (1, 1, config.vocab_size)
 
     def test_gradient_flow_full(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         x = torch.randint(0, config.vocab_size, (2, 32))
         targets = torch.randint(0, config.vocab_size, (2, 32))
         logits = model(x)
@@ -62,24 +62,24 @@ class TestDSTTTransformer:
         losses = loss_fn(logits, targets, model)
         losses["loss"].backward()
         # Check gradients exist on key parameters
-        assert model.blocks[0].attention.q_proj.weight.grad is not None
+        assert model.blocks[0].attention.in_proj.weight.grad is not None
 
     def test_param_count_positive(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         assert model.get_num_params() > 0
 
     def test_repr(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         r = repr(model)
-        assert "DSTTTransformer" in r
-        assert "dual_flow=True" in r
+        assert "DSTTv2" in r
+        assert "tensor_fold=True" in r
 
     def test_weight_tying(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         assert model.lm_head.weight is model.embedding.token_embed.weight
 
     def test_causal_mask_generated(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         # Should work without explicitly passing a mask
         x = torch.randint(0, config.vocab_size, (1, 16))
         logits = model(x)
@@ -89,7 +89,7 @@ class TestDSTTTransformer:
 class TestDSTTLoss:
 
     def test_loss_returns_dict(self, config):
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         x = torch.randint(0, config.vocab_size, (2, 32))
         targets = torch.randint(0, config.vocab_size, (2, 32))
         logits = model(x)
