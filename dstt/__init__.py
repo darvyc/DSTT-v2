@@ -21,7 +21,7 @@ Quick start::
 __version__ = "3.0.0"
 
 from dstt.config import DSTTConfig
-from dstt.model import DSTTv2, DSTTTransformer, DSTTBlock
+from dstt.model import DSTTv2, DSTTv2, DSTTBlock
 from dstt.attention import LightweightTensorMixer, RPMultiHeadAttention
 from dstt.embedding import FDMPEmbedding
 from dstt.routing import ARMFeedForward

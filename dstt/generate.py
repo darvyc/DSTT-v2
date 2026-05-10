@@ -1,5 +1,5 @@
 """
-Autoregressive text generation for DSTT-T.
+Autoregressive text generation for DSTT.
 
 Implements the standard GPT generation loop: given a prompt, feed it
 through the model, sample the next token from the output distribution,
@@ -41,7 +41,7 @@ def generate(
     extracted, sampling is applied, and the new token is appended.
 
     Args:
-        model: A ``DSTTTransformer`` instance (or any model that takes
+        model: A ``DSTTv2`` instance (or any model that takes
             ``(batch, seq_len)`` int tensors and returns
             ``(batch, seq_len, vocab_size)`` logits).
         prompt_ids: Starting token ids, shape ``(1, prompt_len)``.
@@ -136,7 +136,7 @@ def generate_text(
     """High-level generation function: prompt string in, text string out.
 
     Args:
-        model: DSTTTransformer instance.
+        model: DSTTv2 instance.
         tokenizer: Tokenizer with encode/decode methods.
         prompt: Input text prompt.
         max_new_tokens: Tokens to generate.

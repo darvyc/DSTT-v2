@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
-name = "dstt-transformer"
+name = "dstt"
 version = "3.0.0"
-description = "DSTT-T: Dynamic Semi-Trained Topology — Transformer. A hybrid transformer with combinatorial partitioning, dual-flow attention, and evolutionary meta-optimisation."
+description = "DSTT: Dynamic Semi-Trained Topology — Transformer. A hybrid transformer with combinatorial partitioning, dual-flow attention, and evolutionary meta-optimisation."
 readme = "README.md"
 license = {text = "Apache-2.0"}
 requires-python = ">=3.9"

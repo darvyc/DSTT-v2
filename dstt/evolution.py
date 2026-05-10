@@ -29,7 +29,7 @@ import numpy as np
 
 @dataclass
 class Chromosome:
-    """Encodes a complete DSTT-T architectural specification.
+    """Encodes a complete DSTT architectural specification.
 
     Each gene corresponds to a per-layer architectural parameter.
     The chromosome length is n_layers * genes_per_layer.
@@ -93,7 +93,7 @@ class Chromosome:
 
 
 class EvolutionaryMetaOptimiser:
-    """Evolves DSTT-T architectural parameters via tournament
+    """Evolves DSTT architectural parameters via tournament
     selection, single-point crossover, and mutation.
 
     Usage::

@@ -1,5 +1,5 @@
 """
-Loss functions for DSTT-T training.
+Loss functions for DSTT training.
 
 Includes the composite DSTT loss that combines standard cross-entropy
 with the ARM-FFN load-balancing auxiliary loss.
@@ -31,7 +31,7 @@ class LoadBalanceLoss(nn.Module):
         """Collect and sum load-balancing losses from all ARM-FFN layers.
 
         Args:
-            model: The full DSTTTransformer model.
+            model: The full DSTTv2 model.
 
         Returns:
             Scalar load-balancing loss.
@@ -46,7 +46,7 @@ class LoadBalanceLoss(nn.Module):
 
 
 class DSTTLoss(nn.Module):
-    """Composite loss for DSTT-T training.
+    """Composite loss for DSTT training.
 
     L = L_task + L_balance
 

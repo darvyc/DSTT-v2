@@ -1,5 +1,5 @@
 """
-Configuration for DSTT-T models.
+Configuration for DSTT models.
 
 Every architectural and training hyperparameter is specified here.
 Use preset class methods for standard configurations::
@@ -17,7 +17,7 @@ from typing import Optional
 
 @dataclass
 class DSTTConfig:
-    """Complete configuration for a DSTT-Transformer model.
+    """Complete configuration for a DSTTransformer model.
 
     Parameters are grouped by the component they control:
     model dimensions, RP-MHA, dual-flow attention, ARM-FFN,
@@ -29,7 +29,7 @@ class DSTTConfig:
     """Model (embedding) dimension."""
 
     n_layers: int = 12
-    """Number of DSTT-T blocks."""
+    """Number of DSTT blocks."""
 
     vocab_size: int = 50257
     """Vocabulary size for token embedding."""

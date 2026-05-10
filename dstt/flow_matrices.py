@@ -1,7 +1,7 @@
 """
 Flow Matrices: CFM, AFM, and Dual-Flow Scoring.
 
-The core innovation of DSTT-T. These modules replace the standard
+The core innovation of DSTT. These modules replace the standard
 scaled dot-product attention score with a composite signal that
 integrates contextual relevance (CFM) and incoherence penalty (AFM).
 

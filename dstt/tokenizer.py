@@ -1,5 +1,5 @@
 """
-Tokenizer utilities for DSTT-T.
+Tokenizer utilities for DSTT.
 
 Provides a simple character-level tokenizer (zero dependencies) and
 an optional wrapper around ``tiktoken`` for GPT-2 BPE tokenization.

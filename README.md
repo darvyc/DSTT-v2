@@ -13,10 +13,9 @@
 
 ---
 
-## What is DSTT-T?
+## What is DSTT?
 
-DSTT-T is a **lightweight sequence model architecture** that replaces or augments every core transformer subsystem with a mechanism from the Dynamic Semi-Trained Topology (DSTT) framework — and trains exactly like GPT-2/3 using **next-token prediction**.
-
+DSTT is a **lightweight sequence model architecture** that replaces or augments every core transformer subsystem with a mechanism from the Dynamic Semi-Trained Topology (DSTT) framework — and trains exactly like GPT-2/3 using **next-token prediction**.
 The model is a causal language model. You feed it tokens, it predicts the next token. The training objective, optimiser, LR schedule, and generation loop are identical to GPT. What's different is what happens *inside* each DSTT-v2 block.
 
 ### The 6 Innovations Inside Each Block
@@ -55,8 +54,8 @@ Input x
 ### 1. Install
 
 ```bash
-git clone https://github.com/your-org/dstt-transformer.git
-cd dstt-transformer
+git clone https://github.com/your-org/dstt.git
+cd dstt
 pip install -e .
 ```
 
@@ -83,7 +82,7 @@ python train.py \
 You'll see output like:
 
 ```
-12:00:01 | INFO | Model: DSTT-T tiny
+12:00:01 | INFO | Model: DSTT tiny
 12:00:01 | INFO |   Parameters: 15.2M (15,203,456)
 12:00:01 | INFO | Training: 5000 steps, effective batch=32, ~40.9M tokens total
 12:00:05 | INFO | step      10 | loss 4.2341 | ppl    68.98 | lr 1.50e-04 | tok/s 204,800
@@ -113,7 +112,7 @@ python examples/train_shakespeare.py
 
 ## How Training Works (GPT-Style)
 
-DSTT-T trains with the same autoregressive next-token prediction objective as GPT-2 and GPT-3. Here's the complete pipeline:
+DSTT trains with the same autoregressive next-token prediction objective as GPT-2 and GPT-3. Here's the complete pipeline:
 
 ### Training Objective
 
@@ -200,7 +199,7 @@ Checkpoints are saved every `save_interval` steps, and the best (lowest validati
 
 ## Generation
 
-DSTT-T generates text exactly like GPT: autoregressive sampling one token at a time.
+DSTT generates text exactly like GPT: autoregressive sampling one token at a time.
 
 ### Sampling Methods
 
@@ -330,7 +329,7 @@ python train.py --help
 ## Project Structure
 
 ```
-dstt-transformer/
+dstt/
 ├── README.md                    ← You are here
 ├── LICENSE
 ├── setup.py
@@ -386,7 +385,7 @@ dstt-transformer/
 
 GPT (Generative Pre-trained Transformer) models are trained with a simple objective: **predict the next word**. Given the sequence "The cat sat on the", the model should predict "mat" (or whatever comes next in the training data).
 
-DSTT-T uses this exact same objective. The difference is the architecture that makes the prediction. A standard GPT uses vanilla multi-head attention and a fixed feed-forward network. DSTT-T replaces these with Ramsey-partitioned attention, dual-flow scoring, and partition-gated expert routing.
+DSTT uses this exact same objective. The difference is the architecture that makes the prediction. A standard GPT uses vanilla multi-head attention and a fixed feed-forward network. DSTT replaces these with Ramsey-partitioned attention, dual-flow scoring, and partition-gated expert routing.
 
 The training loop is identical to GPT:
 1. Sample a random chunk of text from the training data
@@ -466,7 +465,7 @@ pytest tests/ -v
 
 ```bibtex
 @article{dstt2026,
-  title={DSTT-T: Dynamic Semi-Trained Topology as a Hybrid Transformer Architecture},
+  title={DSTT: Dynamic Semi-Trained Topology as a Hybrid Transformer Architecture},
   year={2026},
   note={Technical Specification, Revision 3.0}
 }

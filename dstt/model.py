@@ -74,7 +74,7 @@ class DSTTBlock(nn.Module):
         prev_state: torch.Tensor | None = None,
         attention_mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        """Forward pass of a single DSTT-T block.
+        """Forward pass of a single DSTT block.
 
         Args:
             x: Input tensor, shape (batch, seq_len, d_model).
@@ -195,7 +195,7 @@ class DSTTv2(nn.Module):
         attention_mask: torch.Tensor | None = None,
         modality: int = 0,
     ) -> torch.Tensor:
-        """Forward pass of the full DSTT-T model.
+        """Forward pass of the full DSTT model.
 
         Args:
             input_ids: Token indices, shape (batch, seq_len).
@@ -218,7 +218,7 @@ class DSTTv2(nn.Module):
         if attention_mask is None:
             attention_mask = self._make_causal_mask(seq_len, device, x.dtype)
 
-        # Process through DSTT-T blocks
+        # Process through DSTT blocks
         prev_state = None
         for block in self.blocks:
             x = block(x, context, prev_state, attention_mask)
