@@ -1,5 +1,5 @@
 """
-GPT-style Trainer for DSTT-T.
+GPT-style Trainer for DSTT.
 
 Implements the standard GPT pre-training loop:
 - AdamW optimiser with decoupled weight decay
@@ -17,13 +17,13 @@ is the same objective used by GPT-2 and GPT-3.
 
 Usage::
 
-    from dstt import DSTTConfig, DSTTTransformer
+    from dstt import DSTTConfig, DSTTv2
     from dstt.train_config import TrainConfig
     from dstt.trainer import Trainer
 
     model_cfg = DSTTConfig.tiny()
     train_cfg = TrainConfig(max_steps=1000, batch_size=16)
-    model = DSTTTransformer(model_cfg)
+    model = DSTTv2(model_cfg)
     trainer = Trainer(model, train_cfg, train_dataset, val_dataset)
     trainer.train()
 """
@@ -46,14 +46,14 @@ logger = logging.getLogger(__name__)
 
 
 class Trainer:
-    """GPT-style trainer for DSTT-T models.
+    """GPT-style trainer for DSTT models.
 
     Handles the complete training lifecycle: optimiser setup, learning-
     rate scheduling, gradient accumulation, evaluation, checkpointing,
     and optional sample generation.
 
     Args:
-        model: A ``DSTTTransformer`` instance.
+        model: A ``DSTTv2`` instance.
         config: Training configuration.
         train_dataset: Training dataset (TextDataset or MemmapDataset).
         val_dataset: Validation dataset (may be None to skip eval).

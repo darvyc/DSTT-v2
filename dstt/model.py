@@ -1,8 +1,8 @@
 """
-DSTT-T Model: DSTTTransformer and DSTTBlock.
+DSTT Model: DSTTv2 and DSTTBlock.
 
-The full DSTT-Transformer architecture. Each DSTTBlock composes:
-1. LayerNorm → RP-MHA (Ramsey-partitioned dual-flow attention)
+The full DSTTransformer architecture. Each DSTTBlock composes:
+1. LayerNorm → LTM (Ramsey-partitioned dual-flow attention)
 2. Wittgenstein Gate on attention output
 3. Residual connection
 4. LayerNorm → ARM-FFN (partition-gated mixture of experts)
@@ -15,15 +15,11 @@ and followed by a language-model head.
 
 from __future__ import annotations
 
-import math
-from typing import Optional
-
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from dstt.config import DSTTConfig
-from dstt.attention import RPMultiHeadAttention
+from dstt.attention import LightweightTensorMixer
 from dstt.embedding import FDMPEmbedding
 from dstt.routing import ARMFeedForward
 from dstt.gating import WittgensteinGate
@@ -31,12 +27,12 @@ from dstt.utils import RMSNorm, count_parameters, format_params
 
 
 class DSTTBlock(nn.Module):
-    """A single DSTT-T transformer block.
+    """A single DSTT DSTT-v2 block.
 
     Computation flow::
 
         z  = LayerNorm(x)
-        a  = RP-MHA(z, context, prev_state)
+        a  = LTM(z, context, prev_state)
         x' = x + w₁ ⊙ a                     (Wittgenstein-gated residual)
         z' = LayerNorm(x')
         f  = ARM-FFN(z')
@@ -57,7 +53,7 @@ class DSTTBlock(nn.Module):
         self.ffn_norm = RMSNorm(config.d_model)
 
         # Core sub-layers
-        self.attention = RPMultiHeadAttention(config, layer_idx)
+        self.attention = LightweightTensorMixer(config, layer_idx)
         self.feed_forward = ARMFeedForward(config)
 
         # Wittgenstein gates (optional)
@@ -78,7 +74,7 @@ class DSTTBlock(nn.Module):
         prev_state: torch.Tensor | None = None,
         attention_mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        """Forward pass of a single DSTT-T block.
+        """Forward pass of a single DSTT block.
 
         Args:
             x: Input tensor, shape (batch, seq_len, d_model).
@@ -116,8 +112,8 @@ class DSTTBlock(nn.Module):
         return x
 
 
-class DSTTTransformer(nn.Module):
-    """Complete DSTT-T model.
+class DSTTv2(nn.Module):
+    """Complete DSTT model.
 
     Architecture::
 
@@ -134,7 +130,7 @@ class DSTTTransformer(nn.Module):
     Example::
 
         config = DSTTConfig.tiny()
-        model = DSTTTransformer(config)
+        model = DSTTv2(config)
         x = torch.randint(0, config.vocab_size, (2, 128))
         logits = model(x)  # (2, 128, vocab_size)
     """
@@ -199,7 +195,7 @@ class DSTTTransformer(nn.Module):
         attention_mask: torch.Tensor | None = None,
         modality: int = 0,
     ) -> torch.Tensor:
-        """Forward pass of the full DSTT-T model.
+        """Forward pass of the full DSTT model.
 
         Args:
             input_ids: Token indices, shape (batch, seq_len).
@@ -222,7 +218,7 @@ class DSTTTransformer(nn.Module):
         if attention_mask is None:
             attention_mask = self._make_causal_mask(seq_len, device, x.dtype)
 
-        # Process through DSTT-T blocks
+        # Process through DSTT blocks
         prev_state = None
         for block in self.blocks:
             x = block(x, context, prev_state, attention_mask)
@@ -247,13 +243,17 @@ class DSTTTransformer(nn.Module):
 
     def __repr__(self) -> str:
         return (
-            f"DSTTTransformer(\n"
+            f"DSTTv2(\n"
             f"  layers={self.config.n_layers}, "
             f"d_model={self.config.d_model}, "
             f"heads={self.config.n_heads}, "
             f"experts={self.config.n_experts}\n"
             f"  params={format_params(self._n_params)}, "
-            f"dual_flow=True, "
+            f"tensor_fold=True, "
             f"wittgenstein_gate={self.config.use_wittgenstein_gate}\n"
             f")"
         )
+
+
+# Backward-compatible alias
+DSTTv2 = DSTTv2

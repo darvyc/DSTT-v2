@@ -1,5 +1,5 @@
 """
-Utility functions for DSTT-T.
+Utility functions for DSTT.
 
 Includes mathematical helpers for partition theory, coherence
 computation, and general-purpose neural network utilities.

@@ -1,17 +1,17 @@
 """
-DSTT-T: Dynamic Semi-Trained Topology — Transformer
+DSTT-v2: Dynamic Semi-Trained Topology v2
 ====================================================
 
-A hybrid transformer architecture fusing combinatorial partitioning,
+A lightweight sequence model architecture fusing combinatorial partitioning,
 dual-flow attention, and evolutionary meta-optimisation into every
 layer of the transformer stack.
 
 Quick start::
 
-    from dstt import DSTTConfig, DSTTTransformer
+    from dstt import DSTTConfig, DSTTv2
 
     config = DSTTConfig(d_model=256, n_layers=4, vocab_size=10000)
-    model = DSTTTransformer(config)
+    model = DSTTv2(config)
 
     import torch
     x = torch.randint(0, 10000, (2, 128))
@@ -21,8 +21,8 @@ Quick start::
 __version__ = "3.0.0"
 
 from dstt.config import DSTTConfig
-from dstt.model import DSTTTransformer, DSTTBlock
-from dstt.attention import RPMultiHeadAttention
+from dstt.model import DSTTv2, DSTTv2, DSTTBlock
+from dstt.attention import LightweightTensorMixer, RPMultiHeadAttention
 from dstt.embedding import FDMPEmbedding
 from dstt.routing import ARMFeedForward
 from dstt.gating import WittgensteinGate
@@ -39,10 +39,10 @@ from dstt.data import TextDataset, MemmapDataset, create_datasets
 __all__ = [
     # Model
     "DSTTConfig",
-    "DSTTTransformer",
+    "DSTTv2",
     "DSTTBlock",
     # Components
-    "RPMultiHeadAttention",
+    "LightweightTensorMixer",
     "FDMPEmbedding",
     "ARMFeedForward",
     "WittgensteinGate",
